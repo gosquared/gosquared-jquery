@@ -1,36 +1,36 @@
-(function($) {
+(function($,window) {
 
-  $.fn.track = function(p) {
+  $.fn['track'] = function(p) {
     return this.each(function() {
       var self = $(this);
 
       if (typeof p == 'string') {
         p = {
-          name: p
+          'name': p
         };
       }
-      if (typeof p !== 'object' || !p.name || typeof p.name !== 'string') {
-        console.log('Please provide an object containing at least a name');
+      if (typeof p !== 'object' || !p['name'] || typeof p['name'] !== 'string') {
         return;
       }
 
-      if (typeof p.params !== 'object' || typeof p.params !== 'string') {
-        p.params = {};
+      if (typeof p['params'] !== 'object' || typeof p['params'] !== 'string') {
+        p['params'] = {};
       }
 
-      if ($.isArray(p.events)) {
-        p.events = p.events.join(' ');
+      if ($.isArray(p['events'])) {
+        p['events'] = p['events'].join(' ');
       }
-      if (!p.events || typeof p.events !== 'string') {
-        p.events = 'click';
+      if (!p['events'] || typeof p['events'] !== 'string') {
+        p['events'] = 'click';
       }
 
-      self.on(p.events, function(e) {
-        if ($.isFunction(p.beforeSend)) p.beforeSend(e);
-        if (!GoSquared) window.GoSquared = {};
-        if (!GoSquared.q) GoSquared.q = [];
-        GoSquared.q.push(['TrackEvent', p.name, p.params]);
-        if ($.isFunction(p.afterSend)) p.afterSend(e);
+      self.on(p['events'], function(e) {
+        if ($.isFunction(p['beforeSend'])) p['beforeSend'](e);
+        var gs = window['GoSquared'];
+        if (!window['GoSquared']) window['GoSquared'] = {};
+        if (!window['GoSquared']['q']) window['GoSquared']['q'] = [];
+        window['GoSquared']['q']['push'](['TrackEvent', p['name'], p['params']]);
+        if ($.isFunction(p['beforeSend'])) p['afterSend'](e);
       });
     });
   };
@@ -75,7 +75,7 @@
 
     $.ajax({
       url: 'https://api.gosquared.com/v2/'+endpoint,
-      timeout: params.timeout || opts.timeout || 2000,
+      timeout: params['timeout'] || opts['timeout'] || 2000,
       data: $.extend({},opts,params),
       success: function(data) {
         cb(null,data);
@@ -90,14 +90,14 @@
 
   };
 
-  $.GoSquared = function(config) {
+  $['GoSquared'] = function(config) {
     opts = config;
     return this;
   };
 
   for (var i = 0; i< defaultFunctions.length; i++) {
-    $.GoSquared[defaultFunctions[i]] = defaultFunction.bind(this,defaultFunctions[i]);
+    $['GoSquared'][defaultFunctions[i]] = defaultFunction.bind(this,defaultFunctions[i]);
   }
 
   
-})(jQuery);
+})(jQuery,window);
