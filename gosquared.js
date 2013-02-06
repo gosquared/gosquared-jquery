@@ -1,4 +1,5 @@
 (function($) {
+
   $.fn.track = function(p) {
     if (typeof p != 'object') return 'Please provide an object - required events and name'
     p.params = (typeof p.params == 'object') ? p.params : {};
@@ -30,7 +31,24 @@
     get(func,params,cb);
   };
 
-  var defaultFunctions = ["aggregateStats","alertPreferences","campaigns","concurrents","engagement","events","expandUrl","fullDump","functions","geo","ignoredVisitors","notifications","organics","overview","pages","referrers","reportPreferences","sites","time","timeSeries","trends","visitors"];
+  var defaultFunctions = [
+    "aggregateStats",
+    "campaigns",
+    "concurrents",
+    "engagement",
+    "functions",
+    "geo",
+    "ignoredVisitors",
+    "organics",
+    "overview",
+    "pages",
+    "referrers",
+    "reportPreferences",
+    "sites",
+    "time",
+    "timeSeries",
+    "visitors"
+  ];
 
   var get = function(endpoint, params, cb) {
 
