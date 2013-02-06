@@ -1,20 +1,41 @@
 (function($) {
 
   $.fn.track = function(p) {
-    if (typeof p != 'object') return 'Please provide an object - required events and name'
-    p.params = (typeof p.params == 'object') ? p.params : {};
-    if ((typeof p.events != 'string') || (typeof p.name != 'string')) return 'Please provide at least one event and a name as a string';
-    this.on(p.events, function(e) {
-      if ($.isFunction(p.beforeSend)) p.beforeSend(e);
-      console.log(p.name + ' sent off with params ' + p.params);
-      if (!GoSquared) GoSquared = {};
-      if (!GoSquared.q) GoSquared.q = [];
-      GoSquared.q.push('TrackEvent', p.name, p.params);
-      if ($.isFunction(p.afterSend)) p.afterSend(e);
-      return true;
+    return this.each(function() {
+      var self = $(this);
+
+      if (typeof p == 'string') {
+        p = {
+          name: p
+        };
+      }
+      if (typeof p !== 'object' || !p.name || typeof p.name !== 'string') {
+        console.log('Please provide an object containing at least a name');
+        return;
+      }
+
+      if (typeof p.params !== 'object' || typeof p.params !== 'string') {
+        p.params = {};
+      }
+
+      if ($.isArray(p.events)) {
+        p.events = p.events.join(' ');
+      }
+      if (!p.events || typeof p.events !== 'string') {
+        p.events = 'click';
+      }
+
+      self.on(p.events, function(e) {
+        if ($.isFunction(p.beforeSend)) p.beforeSend(e);
+        if (!GoSquared) window.GoSquared = {};
+        if (!GoSquared.q) GoSquared.q = [];
+        GoSquared.q.push(['TrackEvent', p.name, p.params]);
+        if ($.isFunction(p.afterSend)) p.afterSend(e);
+      });
     });
   };
 
+  // stores the options, such as site_token
   var opts = {};
 
   // makes sure the opts and the callbacks are right
