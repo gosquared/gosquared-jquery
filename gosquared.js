@@ -30,7 +30,7 @@
         if (!window['GoSquared']) window['GoSquared'] = {};
         if (!window['GoSquared']['q']) window['GoSquared']['q'] = [];
         window['GoSquared']['q']['push'](['TrackEvent', p['name'], p['params']]);
-        if ($.isFunction(p['beforeSend'])) p['afterSend'](e);
+        if ($.isFunction(p['afterSend'])) p['afterSend'](e);
       });
     });
   };
