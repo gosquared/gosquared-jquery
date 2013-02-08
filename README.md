@@ -36,7 +36,38 @@ $('.element').track({
 		user: 1,
 		user_name: 'GoSquared'
 	}
+});
+```
+
+To call functions before and/or after an event is tracked
+```javascript
+$('.element').track({
+	name: 'Test',
+	beforeSend: function() {
+		// well then...
+	},
+	afterSend: function() {
+		// I finished
+	}
 })
+```
+
+All together now!
+```javascript
+$('.element').track({
+	name: 'Hello!',
+	params: {
+		wow: 'this is cool',
+		i: 'can track custom parameters'
+	},
+	events: ['hover','click'],
+	beforeSend: function() {
+		console.log('sending event');
+	},
+	afterSend: function() {
+		console.log('sent event');
+	}
+});
 ```
 
 ### API
