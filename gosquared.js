@@ -96,7 +96,7 @@
   };
 
   for (var i = 0; i< defaultFunctions.length; i++) {
-    $['GoSquared'][defaultFunctions[i]] = defaultFunction.bind(this,defaultFunctions[i]);
+    $['GoSquared'][defaultFunctions[i]] = $.proxy(defaultFunction,this,defaultFunctions[i]);
   }
 
   
