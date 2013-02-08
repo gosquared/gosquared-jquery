@@ -109,3 +109,7 @@ $.GoSquared.pages({
 	}
 );
 ```
+
+## Contributing
+
+Contributions are very welcome. Please run `make build` to generate the minified code and open a pull request.
