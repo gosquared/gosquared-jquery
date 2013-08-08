@@ -1,35 +1,33 @@
 (function($,window) {
 
+  // Fill in _gs function in case it hasn't been set yet
+  var gs = '_gs';
+  window[gs] = window[gs] || function(){ (window[gs]['q'] = window[gs]['q'] || []).push(arguments) };
+
+
   $.fn['track'] = function(p) {
     return this.each(function() {
-      var self = $(this);
+      var pName = typeof p === 'object' ? p.name : p;
 
-      if (typeof p == 'string') {
-        p = {
-          'name': p
-        };
-      }
-      if (typeof p !== 'object' || !p['name'] || typeof p['name'] !== 'string') {
-        return;
-      }
+      if(!pName) return;
 
-      if (typeof p['params'] !== 'object' || typeof p['params'] !== 'string') {
-        p['params'] = {};
+      var pParams = p['params'] || {};
+
+      var events = p['events'];
+
+      if ($.isArray(events)) {
+        events = events.join(' ');
       }
 
-      if ($.isArray(p['events'])) {
-        p['events'] = p['events'].join(' ');
-      }
-      if (!p['events'] || typeof p['events'] !== 'string') {
-        p['events'] = 'click';
+      if (!events || typeof events !== 'string'){
+        events = 'click';
       }
 
-      self.on(p['events'], function(e) {
+      $(this).on(events, function(e) {
         if ($.isFunction(p['beforeSend'])) p['beforeSend'](e);
-        var gs = window['GoSquared'];
-        if (!window['GoSquared']) window['GoSquared'] = {};
-        if (!window['GoSquared']['q']) window['GoSquared']['q'] = [];
-        window['GoSquared']['q']['push'](['TrackEvent', p['name'], p['params']]);
+
+        window[gs]('event', pName, pParams);
+
         if ($.isFunction(p['afterSend'])) p['afterSend'](e);
       });
     });
@@ -99,5 +97,5 @@
     $['GoSquared'][defaultFunctions[i]] = $.proxy(defaultFunction,this,defaultFunctions[i]);
   }
 
-  
+
 })(jQuery,window);
