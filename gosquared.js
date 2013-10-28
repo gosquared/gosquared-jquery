@@ -1,3 +1,8 @@
+/**
+@license GoSquared jQuery Plugin v2.0.0
+  Copyright 2013 GoSquared - MIT License
+  https://github.com/gosquared/gosquared-jquery
+*/
 (function($,window) {
 
   // EVENT TRACKING FUNCTIONALITY
