@@ -2,11 +2,13 @@
 
 Enables you to easily use the GoSquared API and also GoSquared event tracking.
 
+Note: event tracking requires the latest version of the GoSquared tracking code. View the [documentation](https://www.gosquared.com/developer/tracker/installation)
+
 ## Usage
 
 ### Event tracking
 
-View our [Events documentation](https://www.gosquared.com/support/articles/966409-targets-gosquared-event-tracking-integration-guide)
+View our [Events documentation](https://www.gosquared.com/developer/tracker/events)
 
 To simply track an event when an element is clicked
 ```javascript
@@ -74,7 +76,7 @@ $('.element').track({
 
 WARNING: Exposing your API key publicly can give people access to some of your account settings, please be careful. We recommend using the PHP SDK or node.js module as a proxy for public API calls.
 
-View our [API Documentation](https://gosquared.com/developer)
+View our [API Documentation](https://gosquared.com/developer/api)
 
 #### Setup
 
@@ -88,9 +90,11 @@ $.GoSquared({
 
 #### Calls
 
+The $.GoSquared object is navigated by namespace then version, such as `$.GoSquared.now.v3` will allow access to the Now V3 functions. The latest version of each function is put onto the namespace and root objects, so `$.GoSquared.now.concurrents` and `$.GoSquared.concurrents` will call the latest version of the concurrents function.
+
 With just a callback function...
 ```javascript
-$.GoSquared.concurrents(function(err,data) {
+$.GoSquared.now.v3.concurrents(function(err,data) {
 	if (err) {
 		console.log('oh noes!',err);
 		return;
@@ -101,7 +105,7 @@ $.GoSquared.concurrents(function(err,data) {
 
 And with additional parameters
 ```javascript
-$.GoSquared.pages({
+$.GoSquared.trends.v2.page({
 		limit: 5
 	},
 	function(err,data) {
