@@ -1,46 +1,35 @@
 (function($,window) {
 
   // EVENT TRACKING FUNCTIONALITY
+
+  // Fill in _gs function in case it hasn't been set yet
+  var gs = '_gs';
+  window[gs] = window[gs] || function(){ (window[gs]['q'] = window[gs]['q'] || []).push(arguments) };
+
   $.fn['track'] = function(p) {
     return this.each(function() {
-      var self = $(this);
+      var pName = typeof p === 'object' ? p.name : p;
 
-      // allow us to only call track with a string of the event name
-      if (typeof p == 'string') {
-        p = {
-          'name': p
-        };
+      if(!pName) return;
+
+      var pParams = p['params'] || {};
+
+      var events = p['events'];
+
+      if ($.isArray(events)) {
+        events = events.join(' ');
       }
 
-      // invalid arguments
-      if (typeof p !== 'object' || !p['name'] || typeof p['name'] !== 'string') {
-        return;
+      if (!events || typeof events !== 'string'){
+        events = 'click';
       }
 
-      // check params is an object or string, {} if not
-      if (typeof p['params'] !== 'object' || typeof p['params'] !== 'string') {
-        p['params'] = {};
-      }
-
-      // join events array if specified
-      if ($.isArray(p['events'])) {
-        p['events'] = p['events'].join(' ');
-      }
-
-      // default to click event
-      if (!p['events'] || typeof p['events'] !== 'string') {
-        p['events'] = 'click';
-      }
-
-      self.on(p['events'], function(e) {
-
-        // if beforeSend is specified, call it
+      $(this).on(events, function(e) {
         if ($.isFunction(p['beforeSend'])) p['beforeSend'](e);
 
         // track the event
-        window['_gs']('event', p['name'], p['params']);
+        window[gs]('event', pName, pParams);
 
-        // if afterSend is specified, call it
         if ($.isFunction(p['afterSend'])) p['afterSend'](e);
       });
     });

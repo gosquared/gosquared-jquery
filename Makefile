@@ -19,11 +19,11 @@ setup: \
 	lib/compiler.jar \
 
 lib/jquery-1.8-extern.js:
-	mkdir -p lib
+	mkdir -p $(dir $@)
 	wget -O $@ http://closure-compiler.googlecode.com/svn/trunk/contrib/externs/jquery-1.8.js
 
 lib/compiler.jar:
-	mkdir -p lib
+	mkdir -p $(dir $@)
 	wget -O- http://closure-compiler.googlecode.com/files/compiler-latest.tar.gz | tar -xz -C lib compiler.jar
 
 gosquared-min.js:
